@@ -1,0 +1,123 @@
+export interface Tool {
+  id: string;
+  name: string;
+  description: string;
+  route: string;
+  icon: string;
+  category: string;
+}
+
+export const TOOLS: Tool[] = [
+  {
+    id: 'js-tokenizer',
+    name: 'JS Tokenizers',
+    description: 'Tokenize text using various AI tokenizers',
+    route: '/tools/js-tokenizer',
+    icon: '🤖',
+    category: 'AI Tools',
+  },
+  {
+    id: 'json-prettifier',
+    name: 'JSON Prettifier',
+    description: 'Format and validate JSON data',
+    route: '/tools/json-prettifier',
+    icon: '{}',
+    category: 'Formatting',
+  },
+  {
+    id: 'xml-prettifier',
+    name: 'XML Prettifier',
+    description: 'Format and validate XML data',
+    route: '/tools/xml-prettifier',
+    icon: '📄',
+    category: 'Formatting',
+  },
+  {
+    id: 'base64-encoder',
+    name: 'Base64 Encoder/Decoder',
+    description: 'Encode and decode Base64 strings',
+    route: '/tools/base64-encoder',
+    icon: '🔤',
+    category: 'Formatting',
+  },
+  {
+    id: 'password-generator',
+    name: 'Password Generator',
+    description: 'Generate secure random passwords',
+    route: '/tools/password-generator',
+    icon: '🔑',
+    category: 'Generators',
+  },
+  {
+    id: 'uuid-generator',
+    name: 'UUID Generator',
+    description: 'Generate UUIDs (v4)',
+    route: '/tools/uuid-generator',
+    icon: '🆔',
+    category: 'Generators',
+  },
+  {
+    id: 'lorem-ipsum-generator',
+    name: 'Lorem Ipsum Generator',
+    description: 'Generate placeholder text for designs',
+    route: '/tools/lorem-ipsum-generator',
+    icon: '📄',
+    category: 'Generators',
+  },
+  {
+    id: 'json-to-typescript',
+    name: 'JSON to TypeScript',
+    description: 'Convert JSON to TypeScript interfaces',
+    route: '/tools/json-to-typescript',
+    icon: '📝',
+    category: 'Code & Schemas',
+  },
+  {
+    id: 'json-to-csharp',
+    name: 'JSON to C#',
+    description: 'Convert JSON to C# classes',
+    route: '/tools/json-to-csharp',
+    icon: '💎',
+    category: 'Code & Schemas',
+  },
+  {
+    id: 'json-to-swift',
+    name: 'JSON to Swift',
+    description: 'Convert JSON to Swift structs',
+    route: '/tools/json-to-swift',
+    icon: '🍎',
+    category: 'Code & Schemas',
+  },
+  {
+    id: 'jwt-decoder',
+    name: 'JWT Decoder',
+    description: 'Decode and inspect JWT tokens',
+    route: '/tools/jwt-decoder',
+    icon: '🔓',
+    category: 'Security',
+  },
+  {
+    id: 'md5-generator',
+    name: 'MD5 Hash',
+    description: 'Generate MD5 hashes from text',
+    route: '/tools/md5-generator',
+    icon: '#️⃣',
+    category: 'Security',
+  },
+  {
+    id: 'sha1-generator',
+    name: 'SHA-1 Hash',
+    description: 'Generate SHA-1 hashes from text',
+    route: '/tools/sha1-generator',
+    icon: '🔐',
+    category: 'Security',
+  },
+  {
+    id: 'api-tester',
+    name: 'API Tester',
+    description: 'Test and view API responses',
+    route: '/tools/api-tester',
+    icon: '🌐',
+    category: 'Networking',
+  },
+];
