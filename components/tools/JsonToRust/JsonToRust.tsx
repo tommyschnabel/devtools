@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ToolLayout from '../ToolLayout';
 import TextArea from '../../shared/TextArea';
 import CodeDisplay from '../../shared/CodeDisplay';
@@ -13,9 +13,29 @@ function JsonToRust() {
   const [input2, setInput2] = useState('');
   const [input3, setInput3] = useState('');
   const [output, setOutput] = useState('');
+  const [example, setExample] = useState('');
   const [error, setError] = useState('');
   const [rootName, setRootName] = useState('Root');
   const [showMultipleInputs, setShowMultipleInputs] = useState(false);
+
+  useEffect(() => {
+    const jsonInput = sessionStorage.getItem('jsonInput');
+    if (jsonInput) {
+      setInput1(jsonInput);
+      setRootName('ApiResponse');
+      const result = convertJsonToRust([jsonInput], {
+        rootStructName: 'ApiResponse',
+      });
+      if (result.success && result.output) {
+        setOutput(result.output);
+        setExample(result.example || '');
+        setError('');
+      } else {
+        setError(result.error || 'Failed to convert JSON');
+      }
+      sessionStorage.removeItem('jsonInput');
+    }
+  }, []);
 
   const convert = () => {
     const inputs = [input1, input2, input3].filter(i => i.trim());
@@ -26,10 +46,12 @@ function JsonToRust() {
 
     if (result.success && result.output) {
       setOutput(result.output);
+      setExample(result.example || '');
       setError('');
     } else {
       setError(result.error || 'Failed to convert JSON');
       setOutput('');
+      setExample('');
     }
   };
 
@@ -38,6 +60,7 @@ function JsonToRust() {
     setInput2('');
     setInput3('');
     setOutput('');
+    setExample('');
     setError('');
     setRootName('Root');
   };
@@ -180,6 +203,17 @@ function JsonToRust() {
             )}
           </div>
         </div>
+
+        {/* Usage Example */}
+        {example && (
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-medium text-slate-700">Usage Example</label>
+              <CopyButton text={example} label="Copy Example" />
+            </div>
+            <CodeDisplay code={example} language="rust" />
+          </div>
+        )}
       </div>
     </ToolLayout>
   );

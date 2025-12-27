@@ -145,6 +145,48 @@ export interface ConversionOptions {
   rootStructName?: string;
 }
 
+function generateInstantiationExample(jsonString: string, rootName: string): string {
+  try {
+    const obj = JSON.parse(jsonString);
+
+    function formatValue(value: any, indent: number = 1): string {
+      const tabs = '\t'.repeat(indent);
+
+      if (value === null) return 'nil';
+      if (typeof value === 'string') return `"${value}"`;
+      if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+
+      if (Array.isArray(value)) {
+        if (value.length === 0) return '[]interface{}{}';
+        const items = value.map(v => `${tabs}\t${formatValue(v, indent + 1)}`).join(',\n');
+        return `[]interface{}{\n${items},\n${tabs}}`;
+      }
+
+      if (typeof value === 'object') {
+        const entries = Object.entries(value);
+        if (entries.length === 0) return '{}';
+        const props = entries.map(([k, v]) => {
+          const goKey = toGoName(k);
+          return `${tabs}\t${goKey}: ${formatValue(v, indent + 1)}`;
+        }).join(',\n');
+        return `{\n${props},\n${tabs}}`;
+      }
+
+      return 'nil';
+    }
+
+    const entries = Object.entries(obj);
+    const props = entries.map(([key, value]) => {
+      const goKey = toGoName(key);
+      return `\t${goKey}: ${formatValue(value, 1)}`;
+    }).join(',\n');
+
+    return `example := ${rootName}{\n${props},\n}`;
+  } catch (error) {
+    return `// Unable to generate example: Invalid JSON`;
+  }
+}
+
 /**
  * Convert JSON objects to Go structs
  * @param jsonStrings - Array of JSON strings (multiple samples to detect optional fields)
@@ -154,7 +196,7 @@ export interface ConversionOptions {
 export function convertJsonToGo(
   jsonStrings: string[],
   options: ConversionOptions = {}
-): { success: boolean; output?: string; error?: string } {
+): { success: boolean; output?: string; example?: string; error?: string } {
   try {
     generatedStructs.clear();
     structCounter = 0;
@@ -209,9 +251,12 @@ export function convertJsonToGo(
       structCode.push(generateStruct(structDef));
     }
 
+    const example = jsonStrings[0] ? generateInstantiationExample(jsonStrings[0], rootName) : '';
+
     return {
       success: true,
       output: structCode.join('\n\n'),
+      example,
     };
   } catch (error) {
     return {

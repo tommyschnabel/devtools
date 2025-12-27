@@ -12,7 +12,51 @@ interface ConversionOptions {
 interface ConversionResult {
   success: boolean;
   output?: string;
+  example?: string;
   error?: string;
+}
+
+function generateInstantiationExample(jsonString: string, rootName: string, options: ConversionOptions = {}): string {
+  try {
+    const obj = JSON.parse(jsonString);
+    const { usePascalCase = false } = options;
+
+    function formatValue(value: any, indent: number = 4): string {
+      const spaces = ' '.repeat(indent);
+
+      if (value === null) return 'null';
+      if (typeof value === 'string') return `"${value}"`;
+      if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+
+      if (Array.isArray(value)) {
+        if (value.length === 0) return 'new List<object>()';
+        const items = value.map(v => `${spaces}    ${formatValue(v, indent + 4)}`).join(',\n');
+        return `new List<object>\n${spaces}{\n${items}\n${spaces}}`;
+      }
+
+      if (typeof value === 'object') {
+        const entries = Object.entries(value);
+        if (entries.length === 0) return 'new { }';
+        const props = entries.map(([k, v]) => {
+          const propName = usePascalCase ? toPascalCase(k) : k;
+          return `${spaces}    ${propName} = ${formatValue(v, indent + 4)}`;
+        }).join(',\n');
+        return `new\n${spaces}{\n${props}\n${spaces}}`;
+      }
+
+      return 'null';
+    }
+
+    const entries = Object.entries(obj);
+    const props = entries.map(([key, value]) => {
+      const propName = usePascalCase ? toPascalCase(key) : key;
+      return `    ${propName} = ${formatValue(value, 4)}`;
+    }).join(',\n');
+
+    return `var example = new ${rootName}\n{\n${props}\n};`;
+  } catch (error) {
+    return `// Unable to generate example: Invalid JSON`;
+  }
 }
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
@@ -198,9 +242,12 @@ export function convertJsonToCSharp(
     const classes = [rootClass, ...Array.from(nestedClasses.values())];
     const output = classes.join('\n\n');
 
+    const example = generateInstantiationExample(jsonInputs[0]!, rootClassName, options);
+
     return {
       success: true,
       output,
+      example,
     };
   } catch (error) {
     return {

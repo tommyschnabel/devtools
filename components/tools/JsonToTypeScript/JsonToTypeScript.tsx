@@ -13,6 +13,7 @@ function JsonToTypeScript() {
   const [input2, setInput2] = useState('');
   const [input3, setInput3] = useState('');
   const [output, setOutput] = useState('');
+  const [example, setExample] = useState('');
   const [error, setError] = useState('');
   const [rootName, setRootName] = useState('Root');
   const [showMultipleInputs, setShowMultipleInputs] = useState(false);
@@ -29,6 +30,7 @@ function JsonToTypeScript() {
       });
       if (result.success && result.output) {
         setOutput(result.output);
+        setExample(result.example || '');
         setError('');
       } else {
         setError(result.error || 'Failed to convert JSON');
@@ -47,10 +49,12 @@ function JsonToTypeScript() {
 
     if (result.success && result.output) {
       setOutput(result.output);
+      setExample(result.example || '');
       setError('');
     } else {
       setError(result.error || 'Failed to convert JSON');
       setOutput('');
+      setExample('');
     }
   };
 
@@ -59,6 +63,7 @@ function JsonToTypeScript() {
     setInput2('');
     setInput3('');
     setOutput('');
+    setExample('');
     setError('');
     setRootName('Root');
   };
@@ -213,6 +218,20 @@ function JsonToTypeScript() {
             )}
           </div>
         </div>
+
+        {/* Usage Example */}
+        {example && (
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-medium text-slate-700">Usage Example</label>
+              <CopyButton text={example} label="Copy Example" />
+            </div>
+            <CodeDisplay
+              code={example}
+              language="typescript"
+            />
+          </div>
+        )}
       </div>
     </ToolLayout>
   );

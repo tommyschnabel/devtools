@@ -142,6 +142,46 @@ export interface ConversionOptions {
   rootClassName?: string;
 }
 
+function generateInstantiationExample(jsonString: string, rootName: string): string {
+  try {
+    const obj = JSON.parse(jsonString);
+
+    function formatValue(value: any, indent: number = 4): string {
+      const spaces = ' '.repeat(indent);
+
+      if (value === null) return 'null';
+      if (typeof value === 'string') return `"${value}"`;
+      if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+
+      if (Array.isArray(value)) {
+        if (value.length === 0) return 'listOf()';
+        const items = value.map(v => `${spaces}    ${formatValue(v, indent + 4)}`).join(',\n');
+        return `listOf(\n${items}\n${spaces})`;
+      }
+
+      if (typeof value === 'object') {
+        const entries = Object.entries(value);
+        if (entries.length === 0) return `${rootName}()`;
+        const props = entries.map(([k, v]) => {
+          return `${spaces}    ${k} = ${formatValue(v, indent + 4)}`;
+        }).join(',\n');
+        return `${rootName}(\n${props}\n${spaces})`;
+      }
+
+      return 'null';
+    }
+
+    const entries = Object.entries(obj);
+    const props = entries.map(([key, value]) => {
+      return `    ${key} = ${formatValue(value, 4)}`;
+    }).join(',\n');
+
+    return `val example = ${rootName}(\n${props}\n)`;
+  } catch (error) {
+    return `// Unable to generate example: Invalid JSON`;
+  }
+}
+
 /**
  * Convert JSON objects to Kotlin data classes
  * @param jsonStrings - Array of JSON strings (multiple samples to detect nullable fields)
@@ -151,7 +191,7 @@ export interface ConversionOptions {
 export function convertJsonToKotlin(
   jsonStrings: string[],
   options: ConversionOptions = {}
-): { success: boolean; output?: string; error?: string } {
+): { success: boolean; output?: string; example?: string; error?: string } {
   try {
     generatedClasses.clear();
     classCounter = 0;
@@ -205,9 +245,12 @@ export function convertJsonToKotlin(
       classCode.push(generateDataClass(classDef));
     }
 
+    const example = jsonStrings[0] ? generateInstantiationExample(jsonStrings[0], rootName) : '';
+
     return {
       success: true,
       output: classCode.join('\n\n'),
+      example,
     };
   } catch (error) {
     return {

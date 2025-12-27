@@ -149,6 +149,42 @@ export interface ConversionOptions {
   rootInterfaceName?: string;
 }
 
+function generateInstantiationExample(jsonString: string, rootName: string): string {
+  try {
+    const obj = JSON.parse(jsonString);
+
+    function formatValue(value: any, indent: number = 2): string {
+      const spaces = ' '.repeat(indent);
+
+      if (value === null) return 'null';
+      if (typeof value === 'string') return `"${value}"`;
+      if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+
+      if (Array.isArray(value)) {
+        if (value.length === 0) return '[]';
+        const items = value.map(v => `${spaces}  ${formatValue(v, indent + 2)}`).join(',\n');
+        return `[\n${items}\n${spaces}]`;
+      }
+
+      if (typeof value === 'object') {
+        const entries = Object.entries(value);
+        if (entries.length === 0) return '{}';
+        const props = entries.map(([k, v]) => `${spaces}  ${k}: ${formatValue(v, indent + 2)}`).join(',\n');
+        return `{\n${props}\n${spaces}}`;
+      }
+
+      return 'undefined';
+    }
+
+    const entries = Object.entries(obj);
+    const props = entries.map(([key, value]) => `  ${key}: ${formatValue(value, 2)}`).join(',\n');
+
+    return `const example: ${rootName} = {\n${props}\n};`;
+  } catch (error) {
+    return `// Unable to generate example: Invalid JSON`;
+  }
+}
+
 /**
  * Convert JSON objects to TypeScript interfaces
  * @param jsonStrings - Array of JSON strings (multiple samples to detect optional fields)
@@ -158,7 +194,7 @@ export interface ConversionOptions {
 export function convertJsonToTypeScript(
   jsonStrings: string[],
   options: ConversionOptions = {}
-): { success: boolean; output?: string; error?: string } {
+): { success: boolean; output?: string; example?: string; error?: string } {
   try {
     // Reset state
     generatedInterfaces.clear();
@@ -220,9 +256,12 @@ export function convertJsonToTypeScript(
       interfaceCode.push(generateInterface(interfaceDef));
     }
 
+    const example = jsonStrings[0] ? generateInstantiationExample(jsonStrings[0], rootName) : '';
+
     return {
       success: true,
       output: interfaceCode.join('\n\n'),
+      example,
     };
   } catch (error) {
     return {

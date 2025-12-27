@@ -10,6 +10,7 @@ interface ConversionOptions {
 interface ConversionResult {
   success: boolean;
   output?: string;
+  example?: string;
   error?: string;
 }
 
@@ -24,6 +25,48 @@ function toCamelCase(str: string): string {
   return str
     .replace(/[_-](.)/g, (_, char) => char.toUpperCase())
     .replace(/^(.)/, (char) => char.toLowerCase());
+}
+
+function generateInstantiationExample(jsonString: string, rootName: string): string {
+  try {
+    const obj = JSON.parse(jsonString);
+
+    function formatValue(value: any, indent: number = 4): string {
+      const spaces = ' '.repeat(indent);
+
+      if (value === null) return 'nil';
+      if (typeof value === 'string') return `"${value}"`;
+      if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+
+      if (Array.isArray(value)) {
+        if (value.length === 0) return '[]';
+        const items = value.map(v => `${spaces}    ${formatValue(v, indent + 4)}`).join(',\n');
+        return `[\n${items}\n${spaces}]`;
+      }
+
+      if (typeof value === 'object') {
+        const entries = Object.entries(value);
+        if (entries.length === 0) return rootName + '()';
+        const props = entries.map(([k, v]) => {
+          const propName = toCamelCase(k);
+          return `${spaces}    ${propName}: ${formatValue(v, indent + 4)}`;
+        }).join(',\n');
+        return `${rootName}(\n${props}\n${spaces})`;
+      }
+
+      return 'nil';
+    }
+
+    const entries = Object.entries(obj);
+    const props = entries.map(([key, value]) => {
+      const propName = toCamelCase(key);
+      return `    ${propName}: ${formatValue(value, 4)}`;
+    }).join(',\n');
+
+    return `let example = ${rootName}(\n${props}\n)`;
+  } catch (error) {
+    return `// Unable to generate example: Invalid JSON`;
+  }
 }
 
 /**
@@ -184,9 +227,12 @@ export function convertJsonToSwift(
     const structs = [rootStruct, ...Array.from(nestedStructs.values())];
     const output = structs.join('\n\n');
 
+    const example = jsonInputs[0] ? generateInstantiationExample(jsonInputs[0], rootStructName) : '';
+
     return {
       success: true,
       output,
+      example,
     };
   } catch (error) {
     return {

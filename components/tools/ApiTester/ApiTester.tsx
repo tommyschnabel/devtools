@@ -8,12 +8,15 @@ import CopyButton from '../../shared/CopyButton';
 import { testApi } from '../../../utils/apiTester';
 import type { ApiResponse } from '../../../utils/apiTester';
 
+type LanguageOption = 'typescript' | 'csharp' | 'swift' | 'kotlin' | 'go' | 'rust';
+
 function ApiTester() {
   const router = useRouter();
   const [url, setUrl] = useState('');
   const [method, setMethod] = useState<'GET' | 'POST'>('GET');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<ApiResponse | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageOption>('typescript');
 
   const sendRequest = async () => {
     if (!url.trim()) {
@@ -39,56 +42,42 @@ function ApiTester() {
   };
 
   const loadSampleApi = () => {
-    setUrl('https://jsonplaceholder.typicode.com/posts/1');
+    const resources = ['posts', 'comments', 'albums', 'photos', 'todos', 'users'];
+    const randomResource = resources[Math.floor(Math.random() * resources.length)];
+    const randomId = Math.floor(Math.random() * 10) + 1; // IDs 1-10 for variety
+
+    setUrl(`https://jsonplaceholder.typicode.com/${randomResource}/${randomId}`);
     setMethod('GET');
     setResponse(null);
   };
 
-  const generateTypeScript = () => {
-    if (!response?.body) return;
-
-    // Validate JSON
-    try {
-      JSON.parse(response.body);
-      // Navigate to JSON to TypeScript tool with the response body
-      // Store in sessionStorage for Next.js navigation
-      sessionStorage.setItem('jsonInput', response.body);
-      router.push('/tools/json-to-typescript');
-    } catch (error) {
-      // Not valid JSON, show error
-      alert('Response is not valid JSON. TypeScript types can only be generated from JSON responses.');
-    }
+  const languageRoutes: Record<LanguageOption, string> = {
+    typescript: '/tools/json-to-typescript',
+    csharp: '/tools/json-to-csharp',
+    swift: '/tools/json-to-swift',
+    kotlin: '/tools/json-to-kotlin',
+    go: '/tools/json-to-go',
+    rust: '/tools/json-to-rust',
   };
 
-  const generateCSharp = () => {
-    if (!response?.body) return;
-
-    // Validate JSON
-    try {
-      JSON.parse(response.body);
-      // Navigate to JSON to C# tool with the response body
-      // Store in sessionStorage for Next.js navigation
-      sessionStorage.setItem('jsonInput', response.body);
-      router.push('/tools/json-to-csharp');
-    } catch (error) {
-      // Not valid JSON, show error
-      alert('Response is not valid JSON. C# classes can only be generated from JSON responses.');
-    }
+  const languageNames: Record<LanguageOption, string> = {
+    typescript: 'TypeScript',
+    csharp: 'C#',
+    swift: 'Swift',
+    kotlin: 'Kotlin',
+    go: 'Go',
+    rust: 'Rust',
   };
 
-  const generateSwift = () => {
+  const generateCode = () => {
     if (!response?.body) return;
 
-    // Validate JSON
     try {
       JSON.parse(response.body);
-      // Navigate to JSON to Swift tool with the response body
-      // Store in sessionStorage for Next.js navigation
       sessionStorage.setItem('jsonInput', response.body);
-      router.push('/tools/json-to-swift');
+      router.push(languageRoutes[selectedLanguage]);
     } catch (error) {
-      // Not valid JSON, show error
-      alert('Response is not valid JSON. Swift structs can only be generated from JSON responses.');
+      alert(`Response is not valid JSON. ${languageNames[selectedLanguage]} code can only be generated from JSON responses.`);
     }
   };
 
@@ -206,32 +195,35 @@ function ApiTester() {
                   <label className="text-sm font-medium text-slate-700">
                     Response Body
                   </label>
-                  <div className="flex gap-2">
-                    <CopyButton text={response.body} label="Copy Body" />
-                    <button
-                      onClick={generateTypeScript}
-                      className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      Generate TypeScript →
-                    </button>
-                    <button
-                      onClick={generateCSharp}
-                      className="px-4 py-2 bg-purple-500 text-white rounded-md font-medium hover:bg-purple-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    >
-                      Generate C# →
-                    </button>
-                    <button
-                      onClick={generateSwift}
-                      className="px-4 py-2 bg-orange-500 text-white rounded-md font-medium hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    >
-                      Generate Swift →
-                    </button>
-                  </div>
+                  <CopyButton text={response.body} label="Copy Body" />
                 </div>
                 <div className="bg-slate-50 border border-slate-200 rounded-md p-4">
                   <pre className="text-sm font-mono text-slate-900 whitespace-pre-wrap break-words max-h-96 overflow-auto">
                     {response.body}
                   </pre>
+                </div>
+                <div className="flex gap-2 items-center mt-3">
+                  <label className="text-sm font-medium text-slate-700">
+                    Generate code from response:
+                  </label>
+                  <select
+                    value={selectedLanguage}
+                    onChange={(e) => setSelectedLanguage(e.target.value as LanguageOption)}
+                    className="px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="typescript">TypeScript</option>
+                    <option value="csharp">C#</option>
+                    <option value="swift">Swift</option>
+                    <option value="kotlin">Kotlin</option>
+                    <option value="go">Go</option>
+                    <option value="rust">Rust</option>
+                  </select>
+                  <button
+                    onClick={generateCode}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 whitespace-nowrap"
+                  >
+                    Generate Code →
+                  </button>
                 </div>
               </div>
             )}
