@@ -80,6 +80,15 @@ export default function RootLayout({
                   >
                     CC BY-NC-SA 4.0
                   </a>
+                  <span aria-hidden="true">•</span>
+                  <a
+                    className="hover:text-slate-800"
+                    href="https://github.com/hminaya/devtools"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Source Code
+                  </a>
                 </div>
               </footer>
             </div>
