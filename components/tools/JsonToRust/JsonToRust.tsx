@@ -105,6 +105,7 @@ function JsonToRust() {
     <ToolLayout
       title="JSON to Rust"
       description="Convert JSON objects to Rust structs with Option field detection"
+      fullWidth
     >
       <div className="space-y-4">
         <div className="flex gap-3 items-center flex-wrap">

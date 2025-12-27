@@ -4,12 +4,13 @@ interface ToolLayoutProps {
   title: string;
   description: string;
   children: ReactNode;
+  fullWidth?: boolean;
 }
 
-function ToolLayout({ title, description, children }: ToolLayoutProps) {
+function ToolLayout({ title, description, children, fullWidth = false }: ToolLayoutProps) {
   return (
     <div className="p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className={fullWidth ? 'mx-auto' : 'max-w-4xl mx-auto'}>
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-slate-900 mb-2">{title}</h1>
           <p className="text-slate-600">{description}</p>

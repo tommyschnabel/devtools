@@ -105,6 +105,7 @@ function JsonToKotlin() {
     <ToolLayout
       title="JSON to Kotlin"
       description="Convert JSON objects to Kotlin data classes with nullable field detection"
+      fullWidth
     >
       <div className="space-y-4">
         <div className="flex gap-3 items-center flex-wrap">

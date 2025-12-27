@@ -113,6 +113,7 @@ function JsonToTypeScript() {
     <ToolLayout
       title="JSON to TypeScript"
       description="Convert JSON objects to TypeScript interfaces with optional field detection"
+      fullWidth
     >
       <div className="space-y-4">
         {/* Action Buttons */}

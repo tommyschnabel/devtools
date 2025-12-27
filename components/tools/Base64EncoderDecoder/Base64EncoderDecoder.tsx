@@ -50,6 +50,7 @@ function Base64EncoderDecoder() {
     <ToolLayout
       title="Base64 Encoder/Decoder"
       description="Encode text to Base64 or decode Base64 strings"
+      fullWidth
     >
       <div className="space-y-4">
         {/* Action Buttons */}

@@ -54,6 +54,7 @@ function XmlPrettifier() {
     <ToolLayout
       title="XML Prettifier"
       description="Format, validate, and minify XML data"
+      fullWidth
     >
       <div className="space-y-4">
         {/* Action Buttons */}

@@ -75,6 +75,7 @@ function JsonPrettifier() {
     <ToolLayout
       title="JSON Prettifier"
       description="Format, validate, and minify JSON data"
+      fullWidth
     >
       <div className="space-y-4">
         {/* Action Buttons */}

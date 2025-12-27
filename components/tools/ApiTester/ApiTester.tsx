@@ -85,6 +85,7 @@ function ApiTester() {
     <ToolLayout
       title="API Tester"
       description="Test API endpoints and view responses"
+      fullWidth
     >
       <div className="space-y-6">
         {/* URL Input and Method */}

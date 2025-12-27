@@ -119,6 +119,7 @@ function JsonToCSharp() {
     <ToolLayout
       title="JSON to C#"
       description="Convert JSON objects to C# classes with nullable property detection"
+      fullWidth
     >
       <div className="space-y-4">
         {/* Action Buttons */}

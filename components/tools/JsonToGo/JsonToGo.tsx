@@ -105,6 +105,7 @@ function JsonToGo() {
     <ToolLayout
       title="JSON to Go"
       description="Convert JSON objects to Go structs with pointer field detection"
+      fullWidth
     >
       <div className="space-y-4">
         <div className="flex gap-3 items-center flex-wrap">

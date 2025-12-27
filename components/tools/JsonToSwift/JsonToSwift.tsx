@@ -113,6 +113,7 @@ function JsonToSwift() {
     <ToolLayout
       title="JSON to Swift"
       description="Convert JSON objects to Swift structs with Codable support"
+      fullWidth
     >
       <div className="space-y-4">
         {/* Action Buttons */}
