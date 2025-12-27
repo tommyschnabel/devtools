@@ -24,6 +24,9 @@ No backend. No data collection. Everything runs locally in your browser.
 *   **JSON to TypeScript:** Convert JSON to TypeScript interfaces
 *   **JSON to C#:** Convert JSON to C# classes
 *   **JSON to Swift:** Convert JSON to Swift structs
+*   **JSON to Kotlin:** Convert JSON to Kotlin data classes
+*   **JSON to Go:** Convert JSON to Go structs
+*   **JSON to Rust:** Convert JSON to Rust structs
 *   **Color Picker:** Pick colors and convert between HEX, RGB, HSL, HSV, and CMYK formats
 
 ### Security
