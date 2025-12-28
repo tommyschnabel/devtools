@@ -17,6 +17,14 @@ export const TOOLS: Tool[] = [
     category: 'AI Tools',
   },
   {
+    id: 'sentiment-analysis',
+    name: 'Sentiment Analysis',
+    description: 'Analyze emotional tone of text using AI',
+    route: '/tools/sentiment-analysis',
+    icon: '😊',
+    category: 'AI Tools',
+  },
+  {
     id: 'json-prettifier',
     name: 'JSON Prettifier',
     description: 'Format and validate JSON data',

@@ -9,6 +9,7 @@ No backend. No data collection. Everything runs locally in your browser.
 
 ### AI Tools
 *   **JS Tokenizers:** Tokenize text using various AI tokenizers
+*   **Sentiment Analysis:** Analyze emotional tone of text using AI
 
 ### Formatting
 *   **JSON Prettifier:** Format and validate JSON data

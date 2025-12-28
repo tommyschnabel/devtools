@@ -143,3 +143,4 @@ vite.config.ts.timestamp-*
 .claude/
 .cursor/
 CLAUDE.md
+tool_suggestion.md
