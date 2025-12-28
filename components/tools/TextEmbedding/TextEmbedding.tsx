@@ -13,9 +13,32 @@ interface SimilarityResult {
   index: number;
 }
 
+type ModelOption = {
+  value: string;
+  label: string;
+  size: string;
+  description: string;
+};
+
+const MODELS: ModelOption[] = [
+  {
+    value: 'Xenova/all-MiniLM-L6-v2',
+    label: 'All-MiniLM-L6-v2 (Default)',
+    size: '~23MB',
+    description: 'Smallest, fastest, best for English',
+  },
+  {
+    value: 'Xenova/multilingual-e5-small',
+    label: 'Multilingual E5 Small',
+    size: '~50MB',
+    description: 'Supports 100+ languages',
+  },
+];
+
 function TextEmbedding() {
   const [queryText, setQueryText] = useState('');
   const [candidateTexts, setCandidateTexts] = useState('');
+  const [selectedModel, setSelectedModel] = useState(MODELS[0]?.value || 'Xenova/all-MiniLM-L6-v2');
   const [results, setResults] = useState<SimilarityResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [modelDownloading, setModelDownloading] = useState(false);
@@ -25,38 +48,40 @@ function TextEmbedding() {
   const [embeddings, setEmbeddings] = useState<{ query?: number[]; candidates?: number[][] }>({});
   const extractorRef = useRef<any>(null);
 
-  // Initialize AI model when component mounts
+  // Initialize AI model when component mounts or model changes
   useEffect(() => {
-    if (!extractorRef.current && !modelReady) {
-      setModelDownloading(true);
+    // Reset state when model changes
+    extractorRef.current = null;
+    setModelReady(false);
+    setModelDownloading(true);
+    setError('');
 
-      import('@xenova/transformers').then(async ({ pipeline, env }) => {
-        try {
-          // Configure for browser environment
-          env.allowLocalModels = false;
-          env.allowRemoteModels = true;
+    import('@xenova/transformers').then(async ({ pipeline, env }) => {
+      try {
+        // Configure for browser environment
+        env.allowLocalModels = false;
+        env.allowRemoteModels = true;
 
-          // Initialize feature extraction pipeline
-          const extractor = await pipeline(
-            'feature-extraction',
-            'Xenova/all-MiniLM-L6-v2'
-          );
+        // Initialize feature extraction pipeline
+        const extractor = await pipeline(
+          'feature-extraction',
+          selectedModel
+        );
 
-          extractorRef.current = extractor;
-          setModelReady(true);
-        } catch (error) {
-          console.error('Failed to load AI model:', error);
-          setError('Failed to load AI model. Please refresh the page and try again.');
-        } finally {
-          setModelDownloading(false);
-        }
-      }).catch((error) => {
-        console.error('Failed to import transformers:', error);
-        setError('Failed to load transformers library. Please refresh the page.');
+        extractorRef.current = extractor;
+        setModelReady(true);
+      } catch (error) {
+        console.error('Failed to load AI model:', error);
+        setError('Failed to load AI model. Please refresh the page and try again.');
+      } finally {
         setModelDownloading(false);
-      });
-    }
-  }, [modelReady]);
+      }
+    }).catch((error) => {
+      console.error('Failed to import transformers:', error);
+      setError('Failed to load transformers library. Please refresh the page.');
+      setModelDownloading(false);
+    });
+  }, [selectedModel]);
 
   // Calculate cosine similarity between two vectors
   const cosineSimilarity = (a: number[], b: number[]): number => {
@@ -229,11 +254,30 @@ Dark mode toggle not working`,
       fullWidth
     >
       <div className="space-y-6">
+        {/* Model Selection */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            AI Model
+          </label>
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            disabled={loading}
+            className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            {MODELS.map((model) => (
+              <option key={model.value} value={model.value}>
+                {model.label} - {model.size} - {model.description}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Model Status */}
         {modelDownloading && (
           <div className="bg-amber-50 border border-amber-200 rounded-md p-4">
             <p className="text-amber-800 text-sm">
-              ⏳ Downloading AI model (~23MB)... This is very fast!
+              ⏳ Downloading AI model ({MODELS.find(m => m.value === selectedModel)?.size})... This is very fast!
             </p>
           </div>
         )}
@@ -241,7 +285,7 @@ Dark mode toggle not working`,
         {modelReady && (
           <div className="bg-green-50 border border-green-200 rounded-md p-4">
             <p className="text-green-800 text-sm">
-              ✅ AI model ready (Xenova/all-MiniLM-L6-v2)
+              ✅ AI model ready ({selectedModel})
             </p>
           </div>
         )}

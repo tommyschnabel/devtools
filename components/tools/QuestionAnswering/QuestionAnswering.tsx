@@ -14,9 +14,32 @@ interface AnswerResult {
   end: number;
 }
 
+type ModelOption = {
+  value: string;
+  label: string;
+  size: string;
+  description: string;
+};
+
+const MODELS: ModelOption[] = [
+  {
+    value: 'Xenova/distilbert-base-uncased-distilled-squad',
+    label: 'DistilBERT Uncased (Default)',
+    size: '~66MB',
+    description: 'Case-insensitive, best for general use',
+  },
+  {
+    value: 'Xenova/distilbert-base-cased-distilled-squad',
+    label: 'DistilBERT Cased',
+    size: '~66MB',
+    description: 'Preserves case, better for technical docs',
+  },
+];
+
 function QuestionAnswering() {
   const [context, setContext] = useState('');
   const [question, setQuestion] = useState('');
+  const [selectedModel, setSelectedModel] = useState(MODELS[0]?.value || 'Xenova/distilbert-base-uncased-distilled-squad');
   const [result, setResult] = useState<AnswerResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [modelDownloading, setModelDownloading] = useState(false);
@@ -24,38 +47,40 @@ function QuestionAnswering() {
   const [error, setError] = useState('');
   const qaRef = useRef<any>(null);
 
-  // Initialize AI model when component mounts
+  // Initialize AI model when component mounts or model changes
   useEffect(() => {
-    if (!qaRef.current && !modelReady) {
-      setModelDownloading(true);
+    // Reset state when model changes
+    qaRef.current = null;
+    setModelReady(false);
+    setModelDownloading(true);
+    setError('');
 
-      import('@xenova/transformers').then(async ({ pipeline, env }) => {
-        try {
-          // Configure for browser environment
-          env.allowLocalModels = false;
-          env.allowRemoteModels = true;
+    import('@xenova/transformers').then(async ({ pipeline, env }) => {
+      try {
+        // Configure for browser environment
+        env.allowLocalModels = false;
+        env.allowRemoteModels = true;
 
-          // Initialize question-answering pipeline
-          const qa = await pipeline(
-            'question-answering',
-            'Xenova/distilbert-base-uncased-distilled-squad'
-          );
+        // Initialize question-answering pipeline
+        const qa = await pipeline(
+          'question-answering',
+          selectedModel
+        );
 
-          qaRef.current = qa;
-          setModelReady(true);
-        } catch (error) {
-          console.error('Failed to load AI model:', error);
-          setError('Failed to load AI model. Please refresh the page and try again.');
-        } finally {
-          setModelDownloading(false);
-        }
-      }).catch((error) => {
-        console.error('Failed to import transformers:', error);
-        setError('Failed to load transformers library. Please refresh the page.');
+        qaRef.current = qa;
+        setModelReady(true);
+      } catch (error) {
+        console.error('Failed to load AI model:', error);
+        setError('Failed to load AI model. Please refresh the page and try again.');
+      } finally {
         setModelDownloading(false);
-      });
-    }
-  }, [modelReady]);
+      }
+    }).catch((error) => {
+      console.error('Failed to import transformers:', error);
+      setError('Failed to load transformers library. Please refresh the page.');
+      setModelDownloading(false);
+    });
+  }, [selectedModel]);
 
   const answerQuestion = async () => {
     if (!context.trim()) {
@@ -173,11 +198,30 @@ function QuestionAnswering() {
       fullWidth
     >
       <div className="space-y-6">
+        {/* Model Selection */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            AI Model
+          </label>
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            disabled={loading}
+            className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            {MODELS.map((model) => (
+              <option key={model.value} value={model.value}>
+                {model.label} - {model.size} - {model.description}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Model Status */}
         {modelDownloading && (
           <div className="bg-amber-50 border border-amber-200 rounded-md p-4">
             <p className="text-amber-800 text-sm">
-              ⏳ Downloading AI model (~66MB)... This may take a moment on first use.
+              ⏳ Downloading AI model ({MODELS.find(m => m.value === selectedModel)?.size})... This may take a moment on first use.
             </p>
           </div>
         )}
@@ -185,7 +229,7 @@ function QuestionAnswering() {
         {modelReady && (
           <div className="bg-green-50 border border-green-200 rounded-md p-4">
             <p className="text-green-800 text-sm">
-              ✅ AI model ready (Xenova/distilbert-base-uncased-distilled-squad)
+              ✅ AI model ready ({selectedModel})
             </p>
           </div>
         )}

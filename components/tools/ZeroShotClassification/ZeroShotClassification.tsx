@@ -12,10 +12,39 @@ interface ClassificationResult {
   score: number;
 }
 
+type ModelOption = {
+  value: string;
+  label: string;
+  size: string;
+  description: string;
+};
+
+const MODELS: ModelOption[] = [
+  {
+    value: 'Xenova/distilbert-base-uncased-mnli',
+    label: 'DistilBERT Base (Default)',
+    size: '~68MB',
+    description: 'Balanced performance and speed',
+  },
+  {
+    value: 'Xenova/nli-deberta-v3-xsmall',
+    label: 'DeBERTa XSmall',
+    size: '~25MB',
+    description: 'Smallest, fastest option',
+  },
+  {
+    value: 'Xenova/nli-deberta-v3-small',
+    label: 'DeBERTa Small',
+    size: '~55MB',
+    description: 'Good balance of size and accuracy',
+  },
+];
+
 function ZeroShotClassification() {
   const [inputText, setInputText] = useState('');
   const [categories, setCategories] = useState('');
   const [multiLabel, setMultiLabel] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(MODELS[0]?.value || 'Xenova/distilbert-base-uncased-mnli');
   const [results, setResults] = useState<ClassificationResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [modelDownloading, setModelDownloading] = useState(false);
@@ -23,38 +52,40 @@ function ZeroShotClassification() {
   const [error, setError] = useState('');
   const classifierRef = useRef<any>(null);
 
-  // Initialize AI model when component mounts
+  // Initialize AI model when component mounts or model changes
   useEffect(() => {
-    if (!classifierRef.current && !modelReady) {
-      setModelDownloading(true);
+    // Reset state when model changes
+    classifierRef.current = null;
+    setModelReady(false);
+    setModelDownloading(true);
+    setError('');
 
-      import('@xenova/transformers').then(async ({ pipeline, env }) => {
-        try {
-          // Configure for browser environment
-          env.allowLocalModels = false;
-          env.allowRemoteModels = true;
+    import('@xenova/transformers').then(async ({ pipeline, env }) => {
+      try {
+        // Configure for browser environment
+        env.allowLocalModels = false;
+        env.allowRemoteModels = true;
 
-          // Initialize zero-shot classification pipeline
-          const classifier = await pipeline(
-            'zero-shot-classification',
-            'Xenova/distilbert-base-uncased-mnli'
-          );
+        // Initialize zero-shot classification pipeline
+        const classifier = await pipeline(
+          'zero-shot-classification',
+          selectedModel
+        );
 
-          classifierRef.current = classifier;
-          setModelReady(true);
-        } catch (error) {
-          console.error('Failed to load AI model:', error);
-          setError('Failed to load AI model. Please refresh the page and try again.');
-        } finally {
-          setModelDownloading(false);
-        }
-      }).catch((error) => {
-        console.error('Failed to import transformers:', error);
-        setError('Failed to load transformers library. Please refresh the page.');
+        classifierRef.current = classifier;
+        setModelReady(true);
+      } catch (error) {
+        console.error('Failed to load AI model:', error);
+        setError('Failed to load AI model. Please refresh the page and try again.');
+      } finally {
         setModelDownloading(false);
-      });
-    }
-  }, [modelReady]);
+      }
+    }).catch((error) => {
+      console.error('Failed to import transformers:', error);
+      setError('Failed to load transformers library. Please refresh the page.');
+      setModelDownloading(false);
+    });
+  }, [selectedModel]);
 
   const classify = async () => {
     if (!inputText.trim()) {
@@ -157,11 +188,30 @@ function ZeroShotClassification() {
       fullWidth
     >
       <div className="space-y-6">
+        {/* Model Selection */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            AI Model
+          </label>
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            disabled={loading}
+            className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            {MODELS.map((model) => (
+              <option key={model.value} value={model.value}>
+                {model.label} - {model.size} - {model.description}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Model Status */}
         {modelDownloading && (
           <div className="bg-amber-50 border border-amber-200 rounded-md p-4">
             <p className="text-amber-800 text-sm">
-              ⏳ Downloading AI model (~68MB)... This may take a minute on first use.
+              ⏳ Downloading AI model ({MODELS.find(m => m.value === selectedModel)?.size})... This may take a minute on first use.
             </p>
           </div>
         )}
@@ -169,7 +219,7 @@ function ZeroShotClassification() {
         {modelReady && (
           <div className="bg-green-50 border border-green-200 rounded-md p-4">
             <p className="text-green-800 text-sm">
-              ✅ AI model ready (Xenova/distilbert-base-uncased-mnli)
+              ✅ AI model ready ({selectedModel})
             </p>
           </div>
         )}
