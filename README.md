@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./docs/logo.svg" alt="DevTools Logo" width="120" height="120">
+</p>
+
 # DevTools
 
 A collection of essential developer tools built with privacy in mind.

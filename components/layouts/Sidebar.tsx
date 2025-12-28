@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { TOOLS } from '../../config/tools';
+import Logo from '../shared/Logo';
 
 function Sidebar() {
   const pathname = usePathname();
@@ -53,7 +54,10 @@ function Sidebar() {
     <div className="w-64 bg-slate-800 h-screen flex flex-col overflow-y-auto">
       {/* Logo/Title */}
       <div className="p-6 border-b border-slate-700">
-        <h1 className="text-white text-xl font-bold">Developer Tools</h1>
+        <div className="flex items-center gap-3">
+          <Logo size={36} />
+          <h1 className="text-white text-xl font-bold">Developer Tools</h1>
+        </div>
 
         {/* Search Input */}
         <div className="mt-4">
