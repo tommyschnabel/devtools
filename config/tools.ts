@@ -49,6 +49,14 @@ export const TOOLS: Tool[] = [
     category: 'AI Tools',
   },
   {
+    id: 'fill-mask',
+    name: 'Fill-Mask Text Completion',
+    description: 'Complete sentences and predict missing words using AI',
+    route: '/tools/fill-mask',
+    icon: '✨',
+    category: 'AI Tools',
+  },
+  {
     id: 'json-prettifier',
     name: 'JSON Prettifier',
     description: 'Format and validate JSON data',
