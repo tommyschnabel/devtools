@@ -25,6 +25,14 @@ export const TOOLS: Tool[] = [
     category: 'AI Tools',
   },
   {
+    id: 'zero-shot-classification',
+    name: 'Zero-Shot Classification',
+    description: 'Classify text into custom categories without training using AI',
+    route: '/tools/zero-shot-classification',
+    icon: '🎯',
+    category: 'AI Tools',
+  },
+  {
     id: 'json-prettifier',
     name: 'JSON Prettifier',
     description: 'Format and validate JSON data',

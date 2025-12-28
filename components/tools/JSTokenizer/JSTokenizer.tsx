@@ -38,6 +38,7 @@ function JSTokenizer() {
     <ToolLayout
       title="JS Tokenizers"
       description="Tokenize text using various AI tokenizers to see how language models process text"
+      fullWidth
     >
       <div className="space-y-6">
         {/* Input Section */}
