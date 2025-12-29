@@ -4,13 +4,14 @@ import { useState, useRef, useEffect, type MouseEvent } from 'react';
 import ToolLayout from '../ToolLayout';
 import Button from '../../shared/Button';
 import CopyButton from '../../shared/CopyButton';
-import { getAllFormats, hsvToRgb, rgbToHex, type ColorFormats } from '../../../utils/colorConversion';
+import { getAllFormats, hsvToRgb, rgbToHex, generateAllPalettes, type ColorFormats, type ColorPalette } from '../../../utils/colorConversion';
 
 function ColorPicker() {
   const [hue, setHue] = useState(330);
   const [saturation, setSaturation] = useState(73);
   const [brightness, setBrightness] = useState(65);
   const [colorFormats, setColorFormats] = useState<ColorFormats | null>(null);
+  const [palettes, setPalettes] = useState<ColorPalette[]>([]);
   const [isDraggingGradient, setIsDraggingGradient] = useState(false);
   const [isDraggingHue, setIsDraggingHue] = useState(false);
 
@@ -26,6 +27,10 @@ function ColorPicker() {
     const hex = rgbToHex(rgb);
     const formats = getAllFormats(hex);
     setColorFormats(formats);
+
+    // Generate color palettes
+    const generatedPalettes = generateAllPalettes(hex);
+    setPalettes(generatedPalettes);
   };
 
   const handleGradientMouseDown = (e: MouseEvent<HTMLDivElement>) => {
@@ -112,6 +117,7 @@ function ColorPicker() {
     <ToolLayout
       title="Color Picker"
       description="Pick colors and convert between HEX, RGB, HSL, HSV, and CMYK formats"
+      fullWidth
     >
       <div className="space-y-6">
         <div className="flex gap-3">
@@ -217,6 +223,40 @@ function ColorPicker() {
             </div>
           )}
         </div>
+
+        {palettes.length > 0 && (
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-slate-800">Color Palettes</h3>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {palettes.map((palette) => (
+                <div key={palette.type} className="bg-white border border-slate-200 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-slate-700 mb-3">{palette.type}</h4>
+                  <div className="space-y-2">
+                    {palette.colors.map((color, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-3 p-2 rounded-md hover:bg-slate-50 transition-colors group"
+                      >
+                        <div
+                          className="w-12 h-12 rounded-md shadow-sm border border-slate-200 flex-shrink-0"
+                          style={{ backgroundColor: color.hex }}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs text-slate-500">{color.name}</div>
+                          <div className="font-mono text-sm text-slate-900 uppercase">{color.hex}</div>
+                        </div>
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                          <CopyButton text={color.hex} label="" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </ToolLayout>
   );

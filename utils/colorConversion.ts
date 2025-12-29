@@ -255,3 +255,185 @@ export function getAllFormats(hex: string): ColorFormats {
     cmyk,
   };
 }
+
+export interface PaletteColor {
+  hex: string;
+  name: string;
+}
+
+export interface ColorPalette {
+  type: string;
+  colors: PaletteColor[];
+}
+
+// Generate complementary colors (opposite on color wheel)
+export function generateComplementary(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+  const complementHue = (hsl.h + 180) % 360;
+  const complementRgb = hslToRgb({ h: complementHue, s: hsl.s, l: hsl.l });
+
+  return [
+    { hex, name: 'Base' },
+    { hex: rgbToHex(complementRgb), name: 'Complementary' },
+  ];
+}
+
+// Generate analogous colors (adjacent on color wheel)
+export function generateAnalogous(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+
+  const analog1Hue = (hsl.h + 30) % 360;
+  const analog2Hue = (hsl.h - 30 + 360) % 360;
+
+  return [
+    { hex: rgbToHex(hslToRgb({ h: analog2Hue, s: hsl.s, l: hsl.l })), name: 'Analogous -30°' },
+    { hex, name: 'Base' },
+    { hex: rgbToHex(hslToRgb({ h: analog1Hue, s: hsl.s, l: hsl.l })), name: 'Analogous +30°' },
+  ];
+}
+
+// Generate triadic colors (120° apart)
+export function generateTriadic(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+
+  const triad1Hue = (hsl.h + 120) % 360;
+  const triad2Hue = (hsl.h + 240) % 360;
+
+  return [
+    { hex, name: 'Base' },
+    { hex: rgbToHex(hslToRgb({ h: triad1Hue, s: hsl.s, l: hsl.l })), name: 'Triadic +120°' },
+    { hex: rgbToHex(hslToRgb({ h: triad2Hue, s: hsl.s, l: hsl.l })), name: 'Triadic +240°' },
+  ];
+}
+
+// Generate tetradic/square colors (90° apart)
+export function generateTetradic(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+
+  const tetrad1Hue = (hsl.h + 90) % 360;
+  const tetrad2Hue = (hsl.h + 180) % 360;
+  const tetrad3Hue = (hsl.h + 270) % 360;
+
+  return [
+    { hex, name: 'Base' },
+    { hex: rgbToHex(hslToRgb({ h: tetrad1Hue, s: hsl.s, l: hsl.l })), name: '+90°' },
+    { hex: rgbToHex(hslToRgb({ h: tetrad2Hue, s: hsl.s, l: hsl.l })), name: '+180°' },
+    { hex: rgbToHex(hslToRgb({ h: tetrad3Hue, s: hsl.s, l: hsl.l })), name: '+270°' },
+  ];
+}
+
+// Generate split complementary colors
+export function generateSplitComplementary(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+
+  const complementHue = (hsl.h + 180) % 360;
+  const split1Hue = (complementHue + 30) % 360;
+  const split2Hue = (complementHue - 30 + 360) % 360;
+
+  return [
+    { hex, name: 'Base' },
+    { hex: rgbToHex(hslToRgb({ h: split2Hue, s: hsl.s, l: hsl.l })), name: 'Split -30°' },
+    { hex: rgbToHex(hslToRgb({ h: split1Hue, s: hsl.s, l: hsl.l })), name: 'Split +30°' },
+  ];
+}
+
+// Generate monochromatic palette (varying lightness)
+export function generateMonochromatic(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+
+  return [
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: Math.min(90, hsl.l + 30) })), name: 'Lightest' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: Math.min(80, hsl.l + 15) })), name: 'Lighter' },
+    { hex, name: 'Base' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: Math.max(20, hsl.l - 15) })), name: 'Darker' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: Math.max(10, hsl.l - 30) })), name: 'Darkest' },
+  ];
+}
+
+// Generate shades (mixing with black)
+export function generateShades(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+
+  return [
+    { hex, name: '100%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: hsl.l * 0.75 })), name: '75%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: hsl.l * 0.5 })), name: '50%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: hsl.l * 0.25 })), name: '25%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: 0 })), name: 'Black' },
+  ];
+}
+
+// Generate tints (mixing with white)
+export function generateTints(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+  const lightnessRange = 100 - hsl.l;
+
+  return [
+    { hex, name: '100%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: hsl.l + lightnessRange * 0.25 })), name: '75%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: hsl.l + lightnessRange * 0.5 })), name: '50%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: hsl.l + lightnessRange * 0.75 })), name: '25%' },
+    { hex: rgbToHex(hslToRgb({ h: hsl.h, s: hsl.s, l: 100 })), name: 'White' },
+  ];
+}
+
+// Generate web development palette
+export function generateWebDevelopment(hex: string): PaletteColor[] {
+  const hsl = rgbToHsl(hexToRgb(hex));
+
+  // Primary - the selected color
+  const primary = hex;
+
+  // Secondary - triadic color (120° away)
+  const secondaryHue = (hsl.h + 120) % 360;
+  const secondary = rgbToHex(hslToRgb({ h: secondaryHue, s: hsl.s, l: hsl.l }));
+
+  // Accent - split complementary for contrast
+  const accentHue = (hsl.h + 150) % 360;
+  const accent = rgbToHex(hslToRgb({ h: accentHue, s: Math.min(100, hsl.s + 20), l: hsl.l }));
+
+  // Success - green tones (120° is green)
+  const success = rgbToHex(hslToRgb({ h: 140, s: 65, l: 45 }));
+
+  // Warning - orange/yellow tones (40° is orange)
+  const warning = rgbToHex(hslToRgb({ h: 40, s: 90, l: 55 }));
+
+  // Error - red tones (0° is red)
+  const error = rgbToHex(hslToRgb({ h: 0, s: 75, l: 50 }));
+
+  // Info - blue tones (210° is blue)
+  const info = rgbToHex(hslToRgb({ h: 210, s: 70, l: 55 }));
+
+  // Background - very light version of primary
+  const background = rgbToHex(hslToRgb({ h: hsl.h, s: Math.max(10, hsl.s - 40), l: 96 }));
+
+  // Text - dark color with slight hint of primary hue
+  const text = rgbToHex(hslToRgb({ h: hsl.h, s: Math.min(20, hsl.s), l: 15 }));
+
+  return [
+    { hex: primary, name: 'Primary' },
+    { hex: secondary, name: 'Secondary' },
+    { hex: accent, name: 'Accent' },
+    { hex: success, name: 'Success' },
+    { hex: warning, name: 'Warning' },
+    { hex: error, name: 'Error' },
+    { hex: info, name: 'Info' },
+    { hex: background, name: 'Background' },
+    { hex: text, name: 'Text' },
+  ];
+}
+
+// Generate all palette types
+export function generateAllPalettes(hex: string): ColorPalette[] {
+  return [
+    { type: 'Web Development', colors: generateWebDevelopment(hex) },
+    { type: 'Complementary', colors: generateComplementary(hex) },
+    { type: 'Analogous', colors: generateAnalogous(hex) },
+    { type: 'Triadic', colors: generateTriadic(hex) },
+    { type: 'Tetradic', colors: generateTetradic(hex) },
+    { type: 'Split Complementary', colors: generateSplitComplementary(hex) },
+    { type: 'Monochromatic', colors: generateMonochromatic(hex) },
+    { type: 'Shades', colors: generateShades(hex) },
+    { type: 'Tints', colors: generateTints(hex) },
+  ];
+}
