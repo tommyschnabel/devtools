@@ -28,6 +28,7 @@ No backend. No data collection. Everything runs locally in your browser.
 *   **Password Generator:** Generate secure random passwords
 *   **UUID Generator:** Generate UUIDs (v4)
 *   **Lorem Ipsum Generator:** Generate placeholder text for designs
+*   **Random Number Generator:** Generate random numbers and see code samples in multiple languages
 
 ### Code & Schemas
 *   **JSON to TypeScript:** Convert JSON to TypeScript interfaces

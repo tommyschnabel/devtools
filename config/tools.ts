@@ -105,6 +105,14 @@ export const TOOLS: Tool[] = [
     category: 'Generators',
   },
   {
+    id: 'random-number-generator',
+    name: 'Random Number Generator',
+    description: 'Generate random numbers and see code samples in multiple languages',
+    route: '/tools/random-number-generator',
+    icon: '🎲',
+    category: 'Generators',
+  },
+  {
     id: 'json-to-typescript',
     name: 'JSON to TypeScript',
     description: 'Convert JSON to TypeScript interfaces',
