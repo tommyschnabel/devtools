@@ -8,7 +8,7 @@ import CopyButton from '../../shared/CopyButton';
 import { testApi } from '../../../utils/apiTester';
 import type { ApiResponse } from '../../../utils/apiTester';
 
-type LanguageOption = 'typescript' | 'csharp' | 'swift' | 'kotlin' | 'go' | 'rust';
+type LanguageOption = 'typescript' | 'jsdoc' | 'csharp' | 'swift' | 'kotlin' | 'go' | 'rust';
 
 function ApiTester() {
   const router = useRouter();
@@ -53,6 +53,7 @@ function ApiTester() {
 
   const languageRoutes: Record<LanguageOption, string> = {
     typescript: '/tools/json-to-typescript',
+    jsdoc: '/tools/json-to-jsdoc',
     csharp: '/tools/json-to-csharp',
     swift: '/tools/json-to-swift',
     kotlin: '/tools/json-to-kotlin',
@@ -62,6 +63,7 @@ function ApiTester() {
 
   const languageNames: Record<LanguageOption, string> = {
     typescript: 'TypeScript',
+    jsdoc: 'JSDoc',
     csharp: 'C#',
     swift: 'Swift',
     kotlin: 'Kotlin',
@@ -144,11 +146,10 @@ function ApiTester() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm font-medium text-slate-700">Status</p>
-                  <p className={`text-lg font-semibold ${
-                    response.success && response.status && response.status < 400
+                  <p className={`text-lg font-semibold ${response.success && response.status && response.status < 400
                       ? 'text-green-600'
                       : 'text-red-600'
-                  }`}>
+                    }`}>
                     {response.status ? `${response.status} ${response.statusText}` : 'Error'}
                   </p>
                 </div>
@@ -213,6 +214,7 @@ function ApiTester() {
                     className="px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="typescript">TypeScript</option>
+                    <option value="jsdoc">JSDoc</option>
                     <option value="csharp">C#</option>
                     <option value="swift">Swift</option>
                     <option value="kotlin">Kotlin</option>

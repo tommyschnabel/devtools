@@ -121,6 +121,14 @@ export const TOOLS: Tool[] = [
     category: 'Code & Schemas',
   },
   {
+    id: 'json-to-jsdoc',
+    name: 'JSON to JSDoc',
+    description: 'Convert JSON to JSDoc type definitions',
+    route: '/tools/json-to-jsdoc',
+    icon: '📜',
+    category: 'Code & Schemas',
+  },
+  {
     id: 'json-to-csharp',
     name: 'JSON to C#',
     description: 'Convert JSON to C# classes',
