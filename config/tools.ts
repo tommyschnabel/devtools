@@ -81,6 +81,14 @@ export const TOOLS: Tool[] = [
     category: 'Formatting',
   },
   {
+    id: 'stacktrace-formatter',
+    name: 'Stacktrace Formatter',
+    description: 'Format and beautify stack traces from multiple programming languages',
+    route: '/tools/stacktrace-formatter',
+    icon: '📋',
+    category: 'Formatting',
+  },
+  {
     id: 'base64-encoder',
     name: 'Base64 Encoder/Decoder',
     description: 'Encode and decode Base64 strings',

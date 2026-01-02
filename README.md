@@ -23,6 +23,7 @@ No backend. No data collection. Everything runs locally in your browser.
 ### Formatting
 *   **JSON Prettifier:** Format and validate JSON data
 *   **XML Prettifier:** Format and validate XML data
+*   **Stacktrace Formatter:** Format and beautify stack traces from multiple programming languages
 *   **Base64 Encoder/Decoder:** Encode and decode Base64 strings
 
 ### Generators
