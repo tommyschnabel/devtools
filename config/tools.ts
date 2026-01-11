@@ -18,6 +18,14 @@ export const TOOLS: Tool[] = [
     category: 'AI Tools',
   },
   {
+    id: 'rag-chunker',
+    name: 'RAG Chunker',
+    description: 'Split text into retrieval-friendly chunks with overlap and token counts',
+    route: '/tools/rag-chunker',
+    icon: '🧩',
+    category: 'AI Tools',
+  },
+  {
     id: 'sentiment-analysis',
     name: 'Sentiment Analysis',
     description: 'Analyze emotional tone of text using AI',

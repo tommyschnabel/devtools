@@ -13,6 +13,7 @@ No backend. No data collection. Everything runs locally in your browser.
 
 ### AI Tools
 *   **JS Tokenizers:** Tokenize text using various AI tokenizers
+*   **RAG Chunker:** Split text into retrieval-friendly chunks with overlap and token counts
 *   **Sentiment Analysis:** Analyze emotional tone of text using AI
 *   **Zero-Shot Classification:** Classify text into custom categories without training using AI
 *   **Sentence Similarity:** Generate embeddings and find semantic similarity between texts using AI
