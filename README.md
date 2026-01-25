@@ -66,6 +66,13 @@ No backend. No data collection. Everything runs locally in your browser.
 
 Explore the live version of this DevTools suite at [https://www.developers.do](https://www.developers.do).
 
+## AI Discoverability
+
+This site supports the [llms.txt](https://llmstxt.org/) standard for AI discoverability:
+
+- [`/llms.txt`](https://developers.do/llms.txt) - Concise overview of all tools
+- [`/llms-full.txt`](https://developers.do/llms-full.txt) - Detailed documentation for AI consumption
+
 ## Prerequisites
 
 Ensure you have the following installed on your system:

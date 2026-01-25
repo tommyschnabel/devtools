@@ -1,0 +1,297 @@
+# DevTools by developers.do - Complete Documentation
+
+> A privacy-focused collection of free developer tools that run 100% client-side in your browser. No backend, no data collection, no tracking. All processing happens locally on the user's device.
+
+## About DevTools
+
+DevTools is a suite of essential utilities for software developers built with privacy as the core principle. Key characteristics:
+
+- **100% Client-Side**: All tools run entirely in the browser using JavaScript, WebAssembly, and Web APIs
+- **No Data Collection**: User input is never transmitted to any server
+- **No Tracking**: No analytics, cookies for tracking, or fingerprinting
+- **Works Offline**: After initial page load, most tools work without internet
+- **Open Source**: Built with Next.js, React, TypeScript, and Tailwind CSS
+
+Website: https://developers.do
+
+---
+
+## Security Tools
+
+### SHA-256/512 Hash Generator
+**URL**: https://developers.do/tools/sha256-generator
+
+Generate cryptographically secure hashes using SHA-256 (64 characters) or SHA-512 (128 characters). Uses the Web Crypto API for reliable, fast hashing. Ideal for:
+- File integrity verification
+- Password hashing (with proper salting)
+- Digital signatures
+- Data deduplication
+
+### SHA-1 Hash Generator
+**URL**: https://developers.do/tools/sha1-generator
+
+Generate SHA-1 hashes (40 characters). Note: SHA-1 is no longer considered cryptographically secure. Use only for:
+- Checksums
+- Cache busting
+- Non-security-critical deduplication
+- Legacy system compatibility
+
+### MD5 Hash Generator
+**URL**: https://developers.do/tools/md5-generator
+
+Generate MD5 hashes (32 characters). Note: MD5 is cryptographically broken. Use only for:
+- Checksums
+- Cache keys
+- Non-security purposes
+
+### JWT Decoder
+**URL**: https://developers.do/tools/jwt-decoder
+
+Decode and inspect JSON Web Tokens without sending them to a server. Displays:
+- Header (algorithm, type)
+- Payload (claims, expiration, issuer)
+- Signature (for inspection, not verification)
+
+Useful for debugging authentication flows and understanding token contents.
+
+### Secrets Scanner
+**URL**: https://developers.do/tools/secrets-scanner
+
+Scan text, logs, configuration files, or code for accidentally leaked secrets including:
+- AWS access keys and secret keys
+- GitHub tokens
+- Stripe API keys
+- Google API keys
+- Private keys (RSA, SSH)
+- Database connection strings
+- Generic API keys and tokens
+
+### Password Generator
+**URL**: https://developers.do/tools/password-generator
+
+Generate cryptographically secure random passwords using `crypto.getRandomValues()`. Options include:
+- Password length
+- Uppercase/lowercase letters
+- Numbers
+- Special characters
+- Multiple passwords at once
+
+---
+
+## Formatting Tools
+
+### JSON Prettifier
+**URL**: https://developers.do/tools/json-prettifier
+
+Format, validate, and beautify JSON data. Features:
+- Syntax highlighting
+- Error detection with line numbers
+- Minify option
+- Copy formatted output
+
+### XML Prettifier
+**URL**: https://developers.do/tools/xml-prettifier
+
+Format and validate XML data with proper indentation and syntax highlighting.
+
+### Base64 Encoder/Decoder
+**URL**: https://developers.do/tools/base64-encoder
+
+Encode text to Base64 or decode Base64 strings. Useful for:
+- Data URLs
+- Basic authentication headers
+- Email attachments (MIME)
+- Embedding binary data in JSON/XML
+
+### Stacktrace Formatter
+**URL**: https://developers.do/tools/stacktrace-formatter
+
+Format and beautify stack traces from multiple programming languages for easier debugging.
+
+### File Size Converter
+**URL**: https://developers.do/tools/file-size-converter
+
+Convert file sizes between decimal (SI: KB, MB, GB) and binary (IEC: KiB, MiB, GiB) units.
+
+---
+
+## Code Generators & Converters
+
+### JSON to TypeScript
+**URL**: https://developers.do/tools/json-to-typescript
+
+Convert JSON objects to TypeScript interfaces. Automatically infers types and generates properly typed interfaces.
+
+### JSON to C#
+**URL**: https://developers.do/tools/json-to-csharp
+
+Convert JSON to C# classes with proper property types and attributes.
+
+### JSON to Swift
+**URL**: https://developers.do/tools/json-to-swift
+
+Convert JSON to Swift structs with Codable conformance.
+
+### JSON to Kotlin
+**URL**: https://developers.do/tools/json-to-kotlin
+
+Convert JSON to Kotlin data classes.
+
+### JSON to Go
+**URL**: https://developers.do/tools/json-to-go
+
+Convert JSON to Go structs with proper json tags.
+
+### JSON to Rust
+**URL**: https://developers.do/tools/json-to-rust
+
+Convert JSON to Rust structs with serde derive macros.
+
+### JSON to JSDoc
+**URL**: https://developers.do/tools/json-to-jsdoc
+
+Convert JSON to JSDoc type definitions for JavaScript documentation.
+
+---
+
+## Generators
+
+### UUID Generator
+**URL**: https://developers.do/tools/uuid-generator
+
+Generate UUID v4 (random) identifiers. Uses `crypto.randomUUID()` or `crypto.getRandomValues()` for cryptographic randomness.
+
+### QR Code Generator
+**URL**: https://developers.do/tools/qr-code-generator
+
+Generate QR codes from text, URLs, or any data. Uses Canvas API for rendering.
+
+### Lorem Ipsum Generator
+**URL**: https://developers.do/tools/lorem-ipsum-generator
+
+Generate placeholder text for designs. Options for paragraphs, sentences, or words.
+
+### Random Number Generator
+**URL**: https://developers.do/tools/random-number-generator
+
+Generate random numbers with configurable range. Includes code samples in multiple programming languages.
+
+---
+
+## AI-Powered Tools
+
+All AI tools run models directly in the browser using Transformers.js (WebAssembly/WebGPU). No data is sent to external AI services.
+
+### JS Tokenizers
+**URL**: https://developers.do/tools/js-tokenizer
+
+Tokenize text using various AI model tokenizers. Useful for:
+- Estimating token counts for API pricing
+- Understanding how models see your text
+- Debugging prompt engineering
+
+### RAG Chunker
+**URL**: https://developers.do/tools/rag-chunker
+
+Split text into retrieval-friendly chunks with configurable overlap and token counts. Essential for building RAG (Retrieval-Augmented Generation) applications.
+
+### Sentiment Analysis
+**URL**: https://developers.do/tools/sentiment-analysis
+
+Analyze the emotional tone of text (positive, negative, neutral) using in-browser AI models.
+
+### Zero-Shot Classification
+**URL**: https://developers.do/tools/zero-shot-classification
+
+Classify text into custom categories without training. Define your own labels and classify text instantly.
+
+### Sentence Similarity
+**URL**: https://developers.do/tools/sentence-similarity
+
+Generate text embeddings and calculate semantic similarity between sentences or documents.
+
+### Question Answering
+**URL**: https://developers.do/tools/question-answering
+
+Extract answers from a given context passage. Provide context and ask questions about it.
+
+### Fill-Mask Text Completion
+**URL**: https://developers.do/tools/fill-mask
+
+Predict missing words in sentences using masked language models.
+
+### Text Summarization
+**URL**: https://developers.do/tools/text-summarization
+
+Summarize long text into concise overviews using AI.
+
+### Text Extractor
+**URL**: https://developers.do/tools/text-extractor
+
+Extract structured data from unstructured text:
+- Email addresses
+- URLs
+- IP addresses
+- Dates
+- Phone numbers
+- Custom patterns (regex)
+
+---
+
+## Utility Tools
+
+### Color Picker
+**URL**: https://developers.do/tools/color-picker
+
+Pick colors and convert between formats:
+- HEX (#RRGGBB)
+- RGB (red, green, blue)
+- HSL (hue, saturation, lightness)
+- HSV (hue, saturation, value)
+- CMYK (cyan, magenta, yellow, black)
+
+### API Tester
+**URL**: https://developers.do/tools/api-tester
+
+Test REST API endpoints and view responses. Supports:
+- GET, POST, PUT, DELETE, PATCH methods
+- Custom headers
+- Request body
+- Response inspection
+
+Note: This is the only tool that makes external HTTP requests, and only to URLs explicitly provided by the user.
+
+### iOS App Lookup
+**URL**: https://developers.do/tools/ios-app-lookup
+
+Look up iOS app metadata from the App Store using bundle ID. Returns app name, description, version, ratings, and more.
+
+---
+
+## Privacy Commitment
+
+DevTools is built on a strict privacy-first philosophy:
+
+1. **No Analytics**: We don't use Google Analytics, Mixpanel, or any tracking service
+2. **No Cookies**: No tracking cookies. Only functional cookies for preferences if needed
+3. **No Server Processing**: All tool operations happen in your browser
+4. **No Data Retention**: We don't store any user input or output
+5. **No Account Required**: Use all tools without signing up
+6. **Open Source**: Verify our claims by reviewing the code
+
+---
+
+## Technical Stack
+
+- **Framework**: Next.js 16.1.1 (Static Export)
+- **UI**: React 19.2.3, Tailwind CSS 4.1.18
+- **Language**: TypeScript 5.9.3
+- **AI Runtime**: Transformers.js (WASM/WebGPU)
+- **Crypto**: Web Crypto API
+- **Package Manager**: Bun
+
+---
+
+## Contact
+
+Website: https://developers.do
