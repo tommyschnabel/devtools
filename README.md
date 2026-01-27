@@ -61,6 +61,8 @@ No backend. No data collection. Everything runs locally in your browser.
 *   **iOS App Lookup:** Look up iOS app metadata from the App Store using bundle ID
 *   **Terremoto:** iOS app for tracking earthquakes in real-time
 *   **FedPulse:** iOS app to search, save, and track federal government jobs
+*   **FAA Part 107 Quiz Prep:** iOS app for FAA Part 107 drone pilot certification exam preparation
+*   **Citizenship Test Prep:** iOS app for US citizenship naturalization test preparation
 
 ## View Live
 

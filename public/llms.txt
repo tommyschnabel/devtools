@@ -45,3 +45,10 @@ DevTools provides essential utilities for developers including hash generators, 
 - [Stacktrace Formatter](https://developers.do/tools/stacktrace-formatter): Format stack traces from multiple languages
 - [API Tester](https://developers.do/tools/api-tester): Test and view API responses
 - [iOS App Lookup](https://developers.do/tools/ios-app-lookup): Look up iOS app metadata by bundle ID
+
+## Apps
+
+- [Terremoto](https://terremoto.developers.do): iOS app for tracking earthquakes in real-time
+- [FedPulse](https://fedpulse.developers.do): iOS app to search, save, and track federal government jobs
+- [FAA Part 107 Quiz Prep](https://part107.developers.do): iOS app for FAA Part 107 drone pilot certification exam preparation
+- [Citizenship Test Prep](https://citizenshiptest.developers.do): iOS app for US citizenship naturalization test preparation

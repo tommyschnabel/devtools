@@ -268,6 +268,46 @@ Look up iOS app metadata from the App Store using bundle ID. Returns app name, d
 
 ---
 
+## iOS Apps
+
+### Terremoto
+**URL**: https://terremoto.developers.do
+
+iOS app for tracking earthquakes in real-time. Features:
+- Real-time earthquake alerts
+- Interactive map with earthquake locations
+- Historical earthquake data
+- Customizable notification settings
+
+### FedPulse
+**URL**: https://fedpulse.developers.do
+
+iOS app to search, save, and track federal government jobs. Features:
+- Search USAJobs listings
+- Save and track favorite positions
+- Job alerts and notifications
+- Filter by agency, location, and salary
+
+### FAA Part 107 Quiz Prep
+**URL**: https://part107.developers.do
+
+iOS app for FAA Part 107 drone pilot certification exam preparation. Features:
+- Practice questions for the FAA Part 107 exam
+- Study mode and test simulation
+- Track your progress
+- Comprehensive coverage of drone regulations
+
+### Citizenship Test Prep
+**URL**: https://citizenshiptest.developers.do
+
+iOS app for US citizenship naturalization test preparation. Features:
+- All 100 civics test questions
+- Practice tests and flashcards
+- Audio pronunciation of questions and answers
+- Track your study progress
+
+---
+
 ## Privacy Commitment
 
 DevTools is built on a strict privacy-first philosophy:
