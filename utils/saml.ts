@@ -48,28 +48,24 @@ async function inflate(data: Uint8Array): Promise<string> {
   const writer = ds.writable.getWriter();
   const reader = ds.readable.getReader();
 
-  // Drive the writer and capture any rejection so it doesn't go unhandled.
   const writerDone = writer.write(data as unknown as BufferSource)
-    .then(() => writer.close())
-    .catch(() => {
-      // Abort the readable side so the reader loop below terminates.
-      try { reader.cancel(); } catch { /* ignore */ }
-    });
+    .then(() => writer.close());
 
   const chunks: Uint8Array[] = [];
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      chunks.push(value);
-    }
-  } catch {
-    // Wait for the writer to settle before re-throwing so nothing leaks.
-    await writerDone;
+  const [readResult] = await Promise.allSettled([
+    (async () => {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+      }
+    })(),
+    writerDone,
+  ]);
+
+  if (readResult.status === 'rejected') {
     throw new Error('Inflate failed');
   }
-
-  await writerDone;
 
   const totalLength = chunks.reduce((sum, c) => sum + c.length, 0);
   const result = new Uint8Array(totalLength);
@@ -80,6 +76,11 @@ async function inflate(data: Uint8Array): Promise<string> {
   }
 
   return new TextDecoder().decode(result);
+}
+
+function looksLikeXml(str: string): boolean {
+  const trimmed = str.trimStart();
+  return trimmed.startsWith('<') && (trimmed.includes('saml') || trimmed.includes('SAML') || trimmed.includes('xmlns'));
 }
 
 function bytesToString(bytes: Uint8Array): string {
@@ -258,13 +259,21 @@ export async function decodeSaml(
       return { success: false, error: 'Invalid Base64 encoding. Make sure to paste the raw Base64 SAML data.' };
     }
 
-    // Step 3: Try inflate (deflate-raw) first, then fall back to plain Base64
+    // Step 3: Try plain Base64 first; only attempt inflate if it doesn't look like XML.
+    // This avoids feeding non-deflated data into DecompressionStream, which throws
+    // an unhandled internal TypeError in some runtimes.
     let xmlString: string;
-    try {
-      xmlString = await inflate(bytes);
-    } catch {
-      // Not deflated — try as plain text
-      xmlString = bytesToString(bytes);
+    const plainText = bytesToString(bytes);
+    if (looksLikeXml(plainText)) {
+      xmlString = plainText;
+    } else {
+      // Likely deflate-compressed (HTTP-Redirect binding) — inflate
+      try {
+        xmlString = await inflate(bytes);
+      } catch {
+        // Last resort: use the plain text and let XML parsing decide
+        xmlString = plainText;
+      }
     }
 
     // Step 4: Parse XML
