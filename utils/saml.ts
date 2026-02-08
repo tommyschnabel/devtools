@@ -48,15 +48,28 @@ async function inflate(data: Uint8Array): Promise<string> {
   const writer = ds.writable.getWriter();
   const reader = ds.readable.getReader();
 
-  writer.write(data as unknown as BufferSource);
-  writer.close();
+  // Drive the writer and capture any rejection so it doesn't go unhandled.
+  const writerDone = writer.write(data as unknown as BufferSource)
+    .then(() => writer.close())
+    .catch(() => {
+      // Abort the readable side so the reader loop below terminates.
+      try { reader.cancel(); } catch { /* ignore */ }
+    });
 
   const chunks: Uint8Array[] = [];
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    chunks.push(value);
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+    }
+  } catch {
+    // Wait for the writer to settle before re-throwing so nothing leaks.
+    await writerDone;
+    throw new Error('Inflate failed');
   }
+
+  await writerDone;
 
   const totalLength = chunks.reduce((sum, c) => sum + c.length, 0);
   const result = new Uint8Array(totalLength);

@@ -142,8 +142,8 @@ export async function toBase64Deflate(xml: string): Promise<string> {
   const writer = cs.writable.getWriter();
   const reader = cs.readable.getReader();
 
-  writer.write(data);
-  writer.close();
+  const writerDone = writer.write(data as unknown as BufferSource)
+    .then(() => writer.close());
 
   const chunks: Uint8Array[] = [];
   while (true) {
@@ -151,6 +151,8 @@ export async function toBase64Deflate(xml: string): Promise<string> {
     if (done) break;
     chunks.push(value);
   }
+
+  await writerDone;
 
   const totalLength = chunks.reduce((sum, c) => sum + c.length, 0);
   const result = new Uint8Array(totalLength);
