@@ -15,6 +15,7 @@ DevTools provides essential utilities for developers including hash generators, 
 - [UUID Generator](https://developers.do/tools/uuid-generator): Generate UUIDs (v4) for unique identifiers
 - [JSON Prettifier](https://developers.do/tools/json-prettifier): Format and validate JSON data
 - [XML Prettifier](https://developers.do/tools/xml-prettifier): Format and validate XML data
+- [HL7 Parser](https://developers.do/tools/hl7-parser): Read and parse HL7 v2 messages into structured JSON
 - [Base64 Encoder/Decoder](https://developers.do/tools/base64-encoder): Encode and decode Base64 strings
 - [JSON to TypeScript](https://developers.do/tools/json-to-typescript): Convert JSON to TypeScript interfaces
 - [JSON to C#](https://developers.do/tools/json-to-csharp): Convert JSON to C# classes

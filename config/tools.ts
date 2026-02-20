@@ -98,6 +98,14 @@ export const TOOLS: Tool[] = [
     category: 'Formatting',
   },
   {
+    id: 'hl7-parser',
+    name: 'HL7 Parser',
+    description: 'Read and parse HL7 v2 messages into structured JSON',
+    route: '/tools/hl7-parser',
+    icon: '🏥',
+    category: 'Formatting',
+  },
+  {
     id: 'stacktrace-formatter',
     name: 'Stacktrace Formatter',
     description: 'Format and beautify stack traces from multiple programming languages',

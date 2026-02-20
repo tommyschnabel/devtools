@@ -94,6 +94,15 @@ Format, validate, and beautify JSON data. Features:
 
 Format and validate XML data with proper indentation and syntax highlighting.
 
+### HL7 Parser
+**URL**: https://developers.do/tools/hl7-parser
+
+Read and parse HL7 v2 healthcare messages into structured JSON. Features:
+- Segment and field breakdown
+- Repetition/component/subcomponent parsing
+- Message metadata extraction (type, trigger, version, control ID)
+- Client-side processing (no server transmission)
+
 ### Base64 Encoder/Decoder
 **URL**: https://developers.do/tools/base64-encoder
 
