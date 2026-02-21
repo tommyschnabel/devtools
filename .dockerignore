@@ -1,0 +1,15 @@
+node_modules
+.git
+.next
+out
+dist
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.vscode
+.idea
+*.md
+docs
+.github
