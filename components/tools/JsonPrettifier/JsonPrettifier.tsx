@@ -86,6 +86,19 @@ function JsonPrettifier() {
     setAutoFixed(false);
   };
 
+  const unescapeQuotes = () => {
+    try {
+      const unescaped = input.replace(/\\"/g, '"');
+      setInput(unescaped);
+      setOutput('');
+      setError('');
+      setSuggestion('');
+      setAutoFixed(false);
+    } catch {
+      setError('Failed to unescape quotes');
+    }
+  };
+
   return (
     <ToolLayout
       title="JSON Prettifier"
@@ -97,6 +110,7 @@ function JsonPrettifier() {
         <div className="flex gap-3">
           <Button label="Prettify" onClick={prettify} variant="primary" />
           <Button label="Minify" onClick={minify} variant="primary" />
+          <Button label="Unescape Quotes" onClick={unescapeQuotes} variant="secondary" />
           <Button label="Generate Sample" onClick={generateRandomJson} variant="secondary" />
           <Button label="Clear" onClick={clear} variant="secondary" />
         </div>
