@@ -382,4 +382,12 @@ export const TOOLS: Tool[] = [
     category: 'Data',
     external: true,
   },
+  {
+    id: 'kv-to-csv',
+    name: 'KV to CSV Converter',
+    description: 'Convert key=value pairs to CSV format',
+    route: '/tools/kv-to-csv',
+    icon: '📋',
+    category: 'Formatting',
+  },
 ];
