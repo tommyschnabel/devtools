@@ -30,6 +30,8 @@ DevTools provides essential utilities for developers including hash generators, 
 - [Stack Trace Analyzer](https://developers.do/tools/stacktrace-analyzer): Analyze stack traces to identify root causes and explain errors
 - [Base64 Encoder/Decoder](https://developers.do/tools/base64-encoder): Encode and decode Base64 strings
 - [Unix Timestamp Converter](https://developers.do/tools/unix-timestamp): Convert between Unix epoch timestamps and human-readable dates
+- [Cron Expression Tester](https://developers.do/tools/cron-tester): Test and parse cron expressions, explain them in plain English, and preview upcoming run times across timezones
+- [Cron Expression Generator](https://developers.do/tools/cron-generator): Build cron expressions visually with field controls — no syntax knowledge required
 - [URL Encoder / Decoder](https://developers.do/tools/url-encoder): Encode and decode URLs using encodeURIComponent and encodeURI
 - [YAML ↔ JSON Converter](https://developers.do/tools/yaml-json-converter): Convert between YAML and JSON with auto-detection
 - [SQL Formatter](https://developers.do/tools/sql-formatter): Format and prettify SQL queries with support for MySQL, PostgreSQL, SQLite, and more

@@ -34,6 +34,8 @@ No backend. Tool data never leaves your browser. Anonymized analytics help impro
 *   **Base64 Encoder/Decoder:** Encode and decode Base64 strings
 *   **File Size Converter:** Convert file sizes between decimal (SI) and binary (IEC) units
 *   **Unix Timestamp Converter:** Convert between Unix epoch timestamps and human-readable dates with timezone support
+*   **Cron Expression Tester:** Test and parse cron expressions, explain them in plain English, and preview upcoming run times across timezones
+*   **Cron Expression Generator:** Build cron expressions visually with field controls — no syntax knowledge required
 *   **URL Encoder / Decoder:** Encode and decode URLs using encodeURIComponent and encodeURI
 *   **YAML ↔ JSON Converter:** Convert between YAML and JSON with auto-detection of input format
 *   **SQL Formatter:** Format and prettify SQL queries with support for MySQL, PostgreSQL, SQLite, and more

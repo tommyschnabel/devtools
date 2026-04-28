@@ -170,6 +170,22 @@ export const TOOLS: Tool[] = [
     category: 'Formatting',
   },
   {
+    id: 'cron-tester',
+    name: 'Cron Expression Tester',
+    description: 'Test and parse cron expressions, explain them in plain English, and preview upcoming run times across timezones',
+    route: '/tools/cron-tester',
+    icon: '⏰',
+    category: 'Formatting',
+  },
+  {
+    id: 'cron-generator',
+    name: 'Cron Expression Generator',
+    description: 'Build cron expressions visually with field controls — no syntax knowledge required',
+    route: '/tools/cron-generator',
+    icon: '🛠️',
+    category: 'Formatting',
+  },
+  {
     id: 'url-encoder',
     name: 'URL Encoder / Decoder',
     description: 'Encode and decode URLs using encodeURIComponent and encodeURI',

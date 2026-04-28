@@ -225,6 +225,23 @@ Convert between Unix epoch timestamps and human-readable dates with timezone sup
 - Converting between epoch seconds/milliseconds and dates
 - Comparing timestamps across timezones
 
+### Cron Expression Tester
+**URL**: https://developers.do/tools/cron-tester
+
+Test and parse cron expressions, see them explained in plain English, and preview upcoming run times in any timezone. Supports standard 5-field syntax (minute, hour, day-of-month, month, day-of-week), ranges, lists, steps, month/weekday names, and macros (@hourly, @daily, @weekly, @monthly, @yearly, @midnight). Useful for:
+- Validating cron expressions before deploying
+- Understanding unfamiliar cron schedules in CI/CD configs
+- Verifying when a job will fire across timezones
+- Quickly checking common patterns
+
+### Cron Expression Generator
+**URL**: https://developers.do/tools/cron-generator
+
+Build cron expressions visually with per-field controls (mode tabs, value chips, range inputs) — no need to memorize cron syntax. Pick how each field behaves (every value, every N, specific values, or a range) and the cron string is generated as you click. Live plain-English description and next-run preview included. Useful for:
+- Creating cron schedules without learning syntax
+- Producing expressions for CI/CD, schedulers, or infrastructure-as-code
+- Sharing schedules with non-technical teammates by working from intent rather than text
+
 ### URL Encoder / Decoder
 **URL**: https://developers.do/tools/url-encoder
 
