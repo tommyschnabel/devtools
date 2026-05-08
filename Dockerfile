@@ -1,18 +1,25 @@
-FROM oven/bun:1 AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN apk add python3
+RUN npm ci
 
 COPY . .
-RUN bun run build
+RUN npm run build
 
-FROM nginx:alpine AS runner
+FROM node:22-alpine AS runner
 
-COPY --from=builder /app/out /usr/share/nginx/html
+WORKDIR /app
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+ENV NODE_ENV=production
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package-lock.json ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/node_modules ./node_modules
+
+EXPOSE 3000
+ENTRYPOINT [ "npm", "run", "start" ]
